@@ -74,7 +74,7 @@ The PostgreSQL database relies on three core entities:
 
 ---
 
-## 📡 API Endpoint Specifications (Inch-by-Inch)
+## 📡 API Endpoint Specifications
 
 ### 1. Public Endpoints (No Auth Required)
 
