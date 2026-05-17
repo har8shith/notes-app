@@ -53,10 +53,8 @@ public class AuthController {
         this.loginBucket = Bucket.builder().addLimit(limit).build();
     }
 
-    // --- REGISTER ENDPOINT ---
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody AuthRequest request) {
-        // Edge Case: Check if email already exists
         if (userRepository.existsByEmail(request.getEmail())) {
             Map<String, String> error = new HashMap<>();
             error.put("message", "Email is already in use");
@@ -75,7 +73,6 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201 Created
     }
 
-    // --- LOGIN ENDPOINT ---
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthRequest request) {
 
@@ -93,10 +90,9 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
         } catch (BadCredentialsException e) {
-            // Edge Case: Return exact format requested by PDF on failure
             Map<String, String> error = new HashMap<>();
             error.put("message", "Invalid email or password");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error); // 401 Unauthorized
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
         }
 
         // If successful, generate the JWT token
@@ -104,6 +100,6 @@ public class AuthController {
         final String jwt = jwtUtil.generateToken(userDetails);
 
         // Return exact format requested by PDF on success
-        return ResponseEntity.ok(new AuthResponse(jwt)); // 200 OK
+        return ResponseEntity.ok(new AuthResponse(jwt));
     }
 }

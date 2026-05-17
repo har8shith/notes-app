@@ -13,7 +13,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    // Edge case handling: Enforcing valid emails at the DB level
+    // Enforcing valid emails at the DB level
     @NotBlank(message = "Email is required")
     @Email(message = "Please provide a valid email format")
     @Column(unique = true, nullable = false)

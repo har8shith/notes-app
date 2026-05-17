@@ -9,12 +9,12 @@ import java.util.Map;
 @RestController
 public class MetadataController {
 
-    // Requirement 10: /about endpoint
+
     @GetMapping("/about")
     public Map<String, Object> getAbout() {
         Map<String, Object> response = new HashMap<>();
 
-        // PUT YOUR ACTUAL NAME AND EMAIL HERE!
+
         response.put("name", "Your Name");
         response.put("email", "your.email@example.com");
 
@@ -28,10 +28,10 @@ public class MetadataController {
         return response;
     }
 
-    // Requirement 9: /openapi.json endpoint
+
     @GetMapping("/openapi.json")
     public Map<String, Object> getOpenApi() {
-        // A simple OpenAPI 3.0 specification map to satisfy the assignment requirement
+
         Map<String, Object> openapi = new HashMap<>();
         openapi.put("openapi", "3.0.0");
 
