@@ -1,5 +1,8 @@
 package org.notesapi.controller;
 
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import io.github.bucket4j.Refill;
 import jakarta.validation.Valid;
 import org.notesapi.dto.AuthRequest;
 import org.notesapi.dto.AuthResponse;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +43,15 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    // Rate limiting bucket for the login endpoint
+    private final Bucket loginBucket;
+
+    public AuthController() {
+        // Create a bucket that allows 5 requests per 1 minute
+        Bandwidth limit = Bandwidth.classic(5, Refill.greedy(5, Duration.ofMinutes(1)));
+        this.loginBucket = Bucket.builder().addLimit(limit).build();
+    }
 
     // --- REGISTER ENDPOINT ---
     @PostMapping("/register")
@@ -65,6 +78,15 @@ public class AuthController {
     // --- LOGIN ENDPOINT ---
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthRequest request) {
+
+        // 1. Check Rate Limit FIRST
+        if (!loginBucket.tryConsume(1)) {
+            Map<String, String> rateLimitError = new HashMap<>();
+            rateLimitError.put("message", "Too many login attempts. Please wait a minute and try again.");
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(rateLimitError); // 429 Too Many Requests
+        }
+
+        // 2. Proceed with Authentication
         try {
             // Verify email and password against the database
             authenticationManager.authenticate(
