@@ -1,15 +1,15 @@
 
-# 📝 Notes API - Core Backend Specification
+#  Notes API - Core Backend Specification
 
 This repository contains the backend REST API for a multi-user notes management service (conceptually similar to Google Keep or Apple Notes). The system handles secure user authentication, granular data isolation, and secure cross-user note sharing.
 
 This project was engineered to satisfy the requirements of an intensive backend engineering internship assignment, with a strong emphasis on edge-case handling, security, and scalability.
 
-**🌐 Live Environment Base URL:** `https://notes-app-5-arhb.onrender.com`
+** Live Environment Base URL:** `https://notes-app-5-arhb.onrender.com`
 
 ---
 
-## 🏗️ System Architecture & Tech Stack
+##  System Architecture & Tech Stack
 
 The application is built using a modern, scalable Java ecosystem.
 
@@ -24,7 +24,7 @@ The application is built using a modern, scalable Java ecosystem.
 
 ---
 
-## 🔐 Security & Design Decisions
+##  Security & Design Decisions
 
 ### 1. Stateless Authentication (JWT)
 
@@ -46,7 +46,7 @@ Every API endpoint that interacts with a Note entity enforces strict ownership c
 
 ---
 
-## 🗄️ Database Schema (Conceptual)
+##  Database Schema (Conceptual)
 
 The PostgreSQL database relies on three core entities:
 
@@ -74,7 +74,7 @@ The PostgreSQL database relies on three core entities:
 
 ---
 
-## 📡 API Endpoint Specifications
+##  API Endpoint Specifications
 
 ### 1. Public Endpoints (No Auth Required)
 
